@@ -12,14 +12,13 @@ export class AuthService {
   constructor(
     @InjectModel(UserModel) private readonly userModel: ModelType<UserModel>,
     private readonly jwtService: JwtService,
-  ) {
-    
-  }
+  ) {}
+
   async createUser(dto: AuthDto) {
     const salt = await genSalt(10);
     const newUser = new this.userModel({
       email: dto.login,
-      passwordHash: await hash(dto.password, salt),
+      passwordHash: await hash(dto.password, salt)
     });
 
     return newUser.save();
@@ -29,7 +28,7 @@ export class AuthService {
     return await this.userModel.findOne({ email }).exec();
   }
 
-  async validateUser(email: string, password: string): Promise<Pick<UserModel, 'email'>> {
+  async validateUser(email: string, password: string): Promise<Pick<UserModel, "email">> {
     const user = await this.findUser(email);
 
     if (!user) {
@@ -47,7 +46,7 @@ export class AuthService {
 
   async login(email: string) {
     return {
-      access_token: await this.jwtService.signAsync(email),
-    }
+      access_token: await this.jwtService.signAsync(email)
+    };
   }
 }

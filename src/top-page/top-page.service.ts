@@ -21,6 +21,10 @@ export class TopPageService {
     return this.topPageModel.findOne({ alias }).exec();
   }
 
+  findByText(text: string) {
+    return this.topPageModel.find({ $text: { $search: text, $caseSensitive: false }}).exec();
+  }
+
   findByCategory(firstCategory: TopLevelCategoryEnum) {
     return this.topPageModel.find({ firstCategory }, { alias: 1, secondCategory: 1, title: 1 }).exec();
   }

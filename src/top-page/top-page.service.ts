@@ -22,11 +22,17 @@ export class TopPageService {
   }
 
   findByText(text: string) {
-    return this.topPageModel.find({ $text: { $search: text, $caseSensitive: false }}).exec();
+    return this.topPageModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
   }
 
   findByCategory(firstCategory: TopLevelCategoryEnum) {
-    return this.topPageModel.find({ firstCategory }, { alias: 1, secondCategory: 1, title: 1 }).exec();
+    return this.topPageModel
+      .aggregate()
+      .match({ firstCategory })
+      .group({
+        _id: { secondCategory: "$secondCategory" },
+        pages: { $push: { alias: "$alias", title: "$title" } }
+      }).exec();
   }
 
   deleteById(id: string) {

@@ -3,7 +3,7 @@ WORKDIR /opt/app
 ADD package.json package.json
 ADD npm install
 
-ADD . .
+ADD src .
 
 RUN npm run build
 RUN npm prune --production

@@ -1,0 +1,20 @@
+name: Publish Docker
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    run-on:  ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: publish to registry
+      - uses: elgohr/Publish-Docker-Github-Action@v5
+        with:
+          registry: docker.pkg.github.
+          name: docker.pkg.github.RadionovAleksandr/learning_nestjs
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tags: "develop_top_api"
+
